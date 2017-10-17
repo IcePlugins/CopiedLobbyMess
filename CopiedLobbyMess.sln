@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopiedLobbyMess", "CopiedLobbyMess\CopiedLobbyMess.csproj", "{2656F89B-6390-4A9B-B791-3635D539B12C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2656F89B-6390-4A9B-B791-3635D539B12C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2656F89B-6390-4A9B-B791-3635D539B12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2656F89B-6390-4A9B-B791-3635D539B12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2656F89B-6390-4A9B-B791-3635D539B12C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A2C5F465-0F95-4E73-BDB0-E7AEC6968953}
+	EndGlobalSection
+EndGlobal
