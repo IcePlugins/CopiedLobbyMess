@@ -28,7 +28,7 @@ namespace CopiedLobbyMess
         public string CameraMode;
         public bool GoldOnly;
         public bool HasBattleye;
-        public bool IsVannila;
+        public bool IsVanilla;
 
         public void LoadDefaults()
         {
@@ -39,7 +39,7 @@ namespace CopiedLobbyMess
             {
                 "Plugins removed by",
                 "CopiedLobbyMess",
-                "Thanks AtiLion"
+                "AtiLion is gay"
             };
 
             HideWorkshop = true;
@@ -57,11 +57,11 @@ namespace CopiedLobbyMess
             MessConfig = false;
             IsPVP = true;
             HasCheats = false;
-            Difficulty = "NORMAL";
-            CameraMode = "BOTH";
+            Difficulty = "NRM";
+            CameraMode = "2p";
             GoldOnly = false;
             HasBattleye = true;
-            IsVannila = false;
+            IsVanilla = false;
         }
     }
 }
