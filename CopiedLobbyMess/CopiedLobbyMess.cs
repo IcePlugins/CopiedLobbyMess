@@ -26,19 +26,18 @@ namespace CopiedLobbyMess
 
         #region Functions
         public static int GetWorkshopCount() =>
-            (String.Join(",", Provider.serverWorkshopFileIDs.Select(x => x.ToString()).ToArray()).Length - 1) / 120 + 1;
+            (String.Join(",", Provider.getServerWorkshopFileIDs().Select(x => x.ToString()).ToArray()).Length - 1) / 120 + 1;
 
         public static int GetConfigurationCount() =>
             (String.Join(",", typeof(ModeConfigData).GetFields()
-            .SelectMany(x => x.GetValue(Provider.modeConfigData).GetType().GetFields().Select(y => y.GetValue(x.GetValue(Provider.modeConfigData))))
+            .SelectMany(x => x.FieldType.GetFields().Select(y => y.GetValue(x.GetValue(Provider.modeConfigData))))
             .Select(x => x is bool v ? v ? "T" : "F" : (String.Empty + x)).ToArray()).Length - 1) / 120 + 1;
-
 
         public void OnPostLevelLoaded(int xd) => ModifyLobbyInfo();
 
         private void ModifyLobbyInfo()
         {
-            bool workshop = Provider.serverWorkshopFileIDs.Count > 0;
+            bool workshop = Provider.getServerWorkshopFileIDs().Count > 0;
 
             #region Workshop
             if (Configuration.Instance.HideWorkshop)
@@ -140,7 +139,7 @@ namespace CopiedLobbyMess
                     SteamGameServer.SetBotPlayerCount(1);
                 if (!Configuration.Instance.HidePlugins && !Configuration.Instance.MessPlugins)
                     SteamGameServer.SetKeyValue("rocketplugins", string.Join(",", R.Plugins.GetPlugins().Select(p => p.Name).ToArray()));
-                string version = ModuleHook.modules.FirstOrDefault(a => a.config.Name == "Rocket.Unturned")?.config.Version ?? "0.0.0.69";
+                string version = ModuleHook.modules.Find(a => a.config.Name == "Rocket.Unturned")?.config.Version ?? "0.0.0.69";
                 SteamGameServer.SetKeyValue("rocket", version);
             }
             #endregion
