@@ -87,7 +87,7 @@ namespace CopiedLobbyMess
                     ",",
                     Configuration.Instance.CameraMode,
                     ",",
-                    workshop ? "WSn" : "WSy",
+                    workshop ? "WSy" : "WSn",
                     ",",
                     Configuration.Instance.GoldOnly ? "GLD" : "F2P",
                     ",",
