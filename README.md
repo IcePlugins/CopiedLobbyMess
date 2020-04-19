@@ -19,6 +19,28 @@ CopiedLobbyMess is a simple Rocket plugin that messes with the lobby information
  - Has Battleye(mess config) - Fakes if the server has battleye or not
  - Is Vannila - Makes the server look like it is vanilla by removing the plugin list and faking the filter check
 
+# Difficulty
+
+Must be one of the following, case insensitive:
+
+- "NRM" "Normal"
+- "HRD" "Hard"
+- "EZY" "Easy"
+
+If you enter something else, it will default to NRM (Normal)
+
+
+# Camera Mode
+
+Must be one of the following, case insensitive:
+
+- "First" "1Pp"
+- "Both" "2Pp"
+- "Third" "3Pp"
+- "Vehicle" "4Pp"
+
+If you enter something else, it will default to 2Pp (Both)
+
 # Installation
 
  1. Download the zip file from Releases
