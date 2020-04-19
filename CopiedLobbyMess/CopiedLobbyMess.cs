@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Rocket.Core;
 using Rocket.Core.Plugins;
 using Rocket.Core.Logging;
@@ -14,17 +15,74 @@ namespace CopiedLobbyMess
 {
     public class CopiedLobbyMess : RocketPlugin<Configuration>
     {
+        public static CopiedLobbyMess Instance;
+        public string Difficulty;
+        public string CameraMode;
+
         protected override void Load()
         {
+            Instance = this;
+
+            string Difficulty = Configuration.Instance.Difficulty.ToUpperInvariant();
+            switch(Difficulty)
+            {
+                case "NRM":
+                case "NORMAL":
+                    Instance.Difficulty = "NRM";
+                    break;
+                case "HARD":
+                case "HRD":
+                    Instance.Difficulty = "HRD";
+                    break;
+                case "EZY":
+                case "EASY":
+                    Instance.Difficulty = "EZY";
+                    break;
+                default:
+                    if (Configuration.Instance.Logging)
+                        Logger.LogError($"Difficulty: {Difficulty} not recognized. Defaulting to NRM (Normal)");
+                    Instance.Difficulty = "NRM";
+                    break;
+            }
+
+            string CameraMode = Configuration.Instance.CameraMode.ToUpperInvariant();
+            switch(CameraMode)
+            {
+                case "FIRST":
+                case "1PP":
+                    Instance.CameraMode = "1Pp";
+                    break;
+                case "BOTH":
+                case "2PP":
+                    Instance.CameraMode = "2Pp";
+                    break;
+                case "THIRD":
+                case "3PP":
+                    Instance.CameraMode = "3Pp";
+                    break;
+                case "VEHICLE":
+                case "4PP":
+                    Instance.CameraMode = "4Pp";
+                    break;
+                default:
+                    if (Configuration.Instance.Logging)
+                        Logger.LogError($"Camera Mode; {CameraMode} not recognized. Defaulting to Both (2Pp)");
+                    Instance.CameraMode = "2Pp";
+                    break;
+            }
+
             if (Level.isLoaded)
-                ModifyLobbyInfo();
+                CreateThread();
 
             Level.onPostLevelLoaded += OnPostLevelLoaded;
         }
 
         protected override void Unload() => Level.onPostLevelLoaded -= OnPostLevelLoaded;
 
-        #region Functions
+        public void OnPostLevelLoaded(int xd) => CreateThread();
+
+        #region Helpers
+
         public static int GetWorkshopCount() =>
             (String.Join(",", Provider.getServerWorkshopFileIDs().Select(x => x.ToString()).ToArray()).Length - 1) / 120 + 1;
 
@@ -33,17 +91,40 @@ namespace CopiedLobbyMess
             .SelectMany(x => x.FieldType.GetFields().Select(y => y.GetValue(x.GetValue(Provider.modeConfigData))))
             .Select(x => x is bool v ? v ? "T" : "F" : (String.Empty + x)).ToArray()).Length - 1) / 120 + 1;
 
-        public void OnPostLevelLoaded(int xd) => ModifyLobbyInfo();
+        private void CreateThread()
+        {
+            Thread thread = new Thread(ModifyLobbyInfo);
+            thread.Start();
+        }
+
+        #endregion
 
         private void ModifyLobbyInfo()
         {
+            Thread.Sleep(1000);
+
+            bool workshop = ModifyWorkshop();
+
+            if (Configuration.Instance.MessConfig)
+                ModifyConfig(workshop);
+
+            if (Configuration.Instance.HideConfig)
+                SteamGameServer.SetKeyValue("Browser_Config_Count", "0");
+            else
+                SteamGameServer.SetKeyValue("Browser_Config_Count", GetConfigurationCount().ToString());
+
+            ModifyPlugins();
+        }
+
+        private bool ModifyWorkshop()
+        {
             bool workshop = Provider.getServerWorkshopFileIDs().Count > 0;
 
-            #region Workshop
             if (Configuration.Instance.HideWorkshop)
             {
                 workshop = false;
                 SteamGameServer.SetKeyValue("Browser_Workshop_Count", "0");
+                Logger.Log($"Workshop Count: {GetWorkshopCount()}");
             }
             else if (Configuration.Instance.MessWorkshop)
             {
@@ -68,50 +149,41 @@ namespace CopiedLobbyMess
             {
                 SteamGameServer.SetKeyValue("Browser_Workshop_Count", GetWorkshopCount().ToString());
             }
-            #endregion
 
-            #region Config
+            return workshop;
+        }
+
+        private void ModifyConfig(bool workshop)
+        {
             string tags = "";
-
-            if (Configuration.Instance.MessConfig)
+            tags += String.Concat(new string[]
             {
-                tags += String.Concat(new string[]
-                {
                     Configuration.Instance.IsPVP ? "PVP" : "PVE",
                     ",<gm>",
                     Configuration.Instance.MessGamemode ? Configuration.Instance.Gamemode : Provider.gameMode.GetType().Name,
                     "</gm>,",
                     Configuration.Instance.HasCheats ? "CHy" : "CHn",
                     ",",
-                    Configuration.Instance.Difficulty,
+                    Instance.Difficulty,
                     ",",
-                    Configuration.Instance.CameraMode,
+                    Instance.CameraMode,
                     ",",
                     workshop ? "WSy" : "WSn",
                     ",",
                     Configuration.Instance.GoldOnly ? "GLD" : "F2P",
                     ",",
                     Configuration.Instance.HasBattleye ? "BEy" : "BEn"
-                });
+            });
 
-                if (!String.IsNullOrEmpty(Provider.configData.Browser.Thumbnail))
-                    tags += ",<tn>" + Provider.configData.Browser.Thumbnail + "</tn>";
+            if (!String.IsNullOrEmpty(Provider.configData.Browser.Thumbnail))
+                tags += ",<tn>" + Provider.configData.Browser.Thumbnail + "</tn>";
 
 
-                SteamGameServer.SetGameTags(tags);
-            }
+            SteamGameServer.SetGameTags(tags);
+        }
 
-            #endregion
-
-            #region Configuration
-
-            if (Configuration.Instance.HideConfig)
-                SteamGameServer.SetKeyValue("Browser_Config_Count", "0");
-            else
-                SteamGameServer.SetKeyValue("Browser_Config_Count", GetConfigurationCount().ToString());
-            #endregion
-
-            #region Plugins
+        private void ModifyPlugins()
+        {
             if (Configuration.Instance.InvisibleRocket)
                 SteamGameServer.SetBotPlayerCount(0); // Bypasses unturned's filter for rocket <3
 
@@ -142,8 +214,6 @@ namespace CopiedLobbyMess
                 string version = ModuleHook.modules.Find(a => a.config.Name == "Rocket.Unturned")?.config.Version ?? "0.0.0.69";
                 SteamGameServer.SetKeyValue("rocket", version);
             }
-            #endregion
         }
-        #endregion
     }
 }

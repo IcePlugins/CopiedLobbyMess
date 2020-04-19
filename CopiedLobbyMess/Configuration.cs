@@ -8,6 +8,8 @@ namespace CopiedLobbyMess
 {
     public class Configuration : IRocketPluginConfiguration
     {
+        public bool Logging;
+
         public bool InvisibleRocket;
         public bool HidePlugins;
         public bool MessPlugins;
@@ -32,6 +34,7 @@ namespace CopiedLobbyMess
 
         public void LoadDefaults()
         {
+            Logging = true;
             InvisibleRocket = false;
             HidePlugins = false;
             MessPlugins = false;
@@ -58,7 +61,7 @@ namespace CopiedLobbyMess
             IsPVP = true;
             HasCheats = false;
             Difficulty = "NRM";
-            CameraMode = "2p";
+            CameraMode = "2Pp";
             GoldOnly = false;
             HasBattleye = true;
             IsVanilla = false;
