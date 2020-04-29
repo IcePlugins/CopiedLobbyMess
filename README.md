@@ -1,6 +1,8 @@
 # CopiedLobbyMess
 CopiedLobbyMess is a simple Rocket plugin that messes with the lobby information the server gives you. It is a copy of AviLobbyMess so for more information you can read up on that.
 
+https://iceplugins.xyz/CopiedLobbyMess
+
 # Features
 
  - Invisible Rocket - The server is still rocket however users that filter with Vanilla still see the server
