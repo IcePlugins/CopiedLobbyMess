@@ -1,0 +1,10 @@
+language: csharp
+solution: CopiedLobbyMess.sln
+deploy:
+  provider: releases
+  api_key:
+    secure: ZeWXBtTL2qhJoiSCIy/Wl8ooTN+C1G3jYVa/IkFStYnOaOvKEjDIpchvhOOBPgNoCYhCR658qQmBhdGXAV2+0EgiMsWedCzkosDKto6Rv5QJ3dRyq6BOw2nYBdlT1uMsfx6qUv46CLW2k5XAoiANTYXinO2tszzG9/QsZzUnPU0r4sTCUo9WXo7rrBSZLgD/i0nwmBCDXJh1ww2DWyACSShUZxyFRzRHBl2qNjURSa1ffZ/EazV4lcDEFqXUMGll+jRQhUou4+tZFvRH1nSl+i0ar+oUBaHzBfAm7ZgASZLsfwYCnT7sVLWDB4NDi3YiHT6duQ3ov3DF54a3OS4s7LaLBKHCGBRSZenBH6xk93mP+Mpbw1ElDPuurh2IYVAiC1wPUbGptXfQuUDIX6XplarvqTqYzyqWFcX+Vr0Kg73f/dYL9GqrLR5TrPOcJDI6Vx23Fqd6QTJfhIMhwvGExX/NnUtlmsYAME8dtEkoD/ZjqeOJumtCbLTN53EEpsRGDfcV+SL+HjEmY7ptbMSBzqdn2SfFgG5EmgXL6tg7iY8ovadEhYDplk+YsU0N5CRCNlvmhOsN/z33mdgaFf9CruHteZ2fqTKyUpnA0DRk69FzLZcg5nl2wWeKjAbvVPcxpYeJFuXfQxfi4WCFADLvBL3/4AJm25WrDqf+nJTx7aw=
+  file: 'CopiedLobbyMess/bin/Release/CopiedLobbyMess.dll'
+  on:
+    tags: true
+  skip_cleanup: true

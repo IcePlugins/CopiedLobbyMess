@@ -32,19 +32,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>C:\Users\Unfou\Desktop\Unturned\Unturned_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\Libraries\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>C:\Users\Unfou\Desktop\Unturned\Unturned_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\Libraries\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Rocket.API">
-      <HintPath>C:\Users\Unfou\Desktop\Unturned\Modules\Rocket.Unturned\Rocket.API.dll</HintPath>
+      <HintPath>..\Libraries\Rocket.API.dll</HintPath>
     </Reference>
     <Reference Include="Rocket.Core">
-      <HintPath>C:\Users\Unfou\Desktop\Unturned\Modules\Rocket.Unturned\Rocket.Core.dll</HintPath>
+      <HintPath>..\Libraries\Rocket.Core.dll</HintPath>
     </Reference>
     <Reference Include="Rocket.Unturned">
-      <HintPath>C:\Users\Unfou\Desktop\Unturned\Modules\Rocket.Unturned\Rocket.Unturned.dll</HintPath>
+      <HintPath>..\Libraries\Rocket.Unturned.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,10 +53,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>C:\Users\Unfou\Desktop\Unturned\Unturned_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\Libraries\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>C:\Users\Unfou\Desktop\Unturned\Unturned_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\Libraries\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\Libraries\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

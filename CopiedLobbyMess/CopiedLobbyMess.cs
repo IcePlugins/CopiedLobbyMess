@@ -16,71 +16,70 @@ namespace CopiedLobbyMess
     public class CopiedLobbyMess : RocketPlugin<Configuration>
     {
         public static CopiedLobbyMess Instance;
-        public string Difficulty;
-        public string CameraMode;
+        private string difficulty;
+        private string cameraMode;
 
         protected override void Load()
         {
             Instance = this;
 
-            string Difficulty = Configuration.Instance.Difficulty.ToUpperInvariant();
-            switch(Difficulty)
+            string configDifficulty = Configuration.Instance.Difficulty.ToUpperInvariant();
+            switch(configDifficulty)
             {
                 case "NRM":
                 case "NORMAL":
-                    Instance.Difficulty = "NRM";
+                    difficulty = "NRM";
                     break;
                 case "HARD":
                 case "HRD":
-                    Instance.Difficulty = "HRD";
+                    difficulty = "HRD";
                     break;
                 case "EZY":
                 case "EASY":
-                    Instance.Difficulty = "EZY";
+                    difficulty = "EZY";
                     break;
                 default:
                     if (Configuration.Instance.Logging)
-                        Logger.LogError($"Difficulty: {Difficulty} not recognized. Defaulting to NRM (Normal)");
-                    Instance.Difficulty = "NRM";
+                        Logger.LogError($"Difficulty: {configDifficulty} not recognized. Defaulting to NRM (Normal)");
+                    difficulty = "NRM";
                     break;
             }
 
-            string CameraMode = Configuration.Instance.CameraMode.ToUpperInvariant();
-            switch(CameraMode)
+            string configCameraMode = Configuration.Instance.CameraMode.ToUpperInvariant();
+            switch(configCameraMode)
             {
                 case "FIRST":
                 case "1PP":
-                    Instance.CameraMode = "1Pp";
+                    cameraMode = "1Pp";
                     break;
                 case "BOTH":
                 case "2PP":
-                    Instance.CameraMode = "2Pp";
+                    cameraMode = "2Pp";
                     break;
                 case "THIRD":
                 case "3PP":
-                    Instance.CameraMode = "3Pp";
+                    cameraMode = "3Pp";
                     break;
                 case "VEHICLE":
                 case "4PP":
-                    Instance.CameraMode = "4Pp";
+                    cameraMode = "4Pp";
                     break;
                 default:
                     if (Configuration.Instance.Logging)
-                        Logger.LogError($"Camera Mode; {CameraMode} not recognized. Defaulting to Both (2Pp)");
-                    Instance.CameraMode = "2Pp";
+                        Logger.LogError($"Camera Mode; {configCameraMode} not recognized. Defaulting to Both (2Pp)");
+                    cameraMode = "2Pp";
                     break;
             }
 
             if (Level.isLoaded)
-                CreateThread();
+                StartModifyingLobbyInfo();
 
             Level.onPostLevelLoaded += OnPostLevelLoaded;
         }
 
         protected override void Unload() => Level.onPostLevelLoaded -= OnPostLevelLoaded;
 
-        public void OnPostLevelLoaded(int xd) => CreateThread();
-
+        public void OnPostLevelLoaded(int _) => StartModifyingLobbyInfo();
         #region Helpers
 
         public static int GetWorkshopCount() =>
@@ -91,16 +90,13 @@ namespace CopiedLobbyMess
             .SelectMany(x => x.FieldType.GetFields().Select(y => y.GetValue(x.GetValue(Provider.modeConfigData))))
             .Select(x => x is bool v ? v ? "T" : "F" : (String.Empty + x)).ToArray()).Length - 1) / 120 + 1;
 
-        private void CreateThread()
-        {
-            Thread thread = new Thread(ModifyLobbyInfo);
-            thread.Start();
-        }
-
+        private void StartModifyingLobbyInfo() => new Thread(ModifyLobbyInfo).Start();
         #endregion
 
         private void ModifyLobbyInfo()
         {
+            // Why the hell are we doing this?
+            // TODO: Find a new way to do this crap instead of spawning thread
             Thread.Sleep(1000);
 
             bool workshop = ModifyWorkshop();
@@ -164,9 +160,9 @@ namespace CopiedLobbyMess
                     "</gm>,",
                     Configuration.Instance.HasCheats ? "CHy" : "CHn",
                     ",",
-                    Instance.Difficulty,
+                    difficulty,
                     ",",
-                    Instance.CameraMode,
+                    cameraMode,
                     ",",
                     workshop ? "WSy" : "WSn",
                     ",",
