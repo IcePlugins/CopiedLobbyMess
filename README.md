@@ -19,7 +19,7 @@ https://iceplugins.xyz/CopiedLobbyMess
  - Camera mode(mess config) - Fakes the allowed camera mode on the server
  - Gold Only(mess config) - Makes the server appear to be gold only
  - Has Battleye(mess config) - Fakes if the server has battleye or not
- - Is Vannila - Makes the server look like it is vanilla by removing the plugin list and faking the filter check
+ - Is Vanilla - Makes the server look like it is vanilla by removing the plugin list and faking the filter check
 
 # Difficulty
 
